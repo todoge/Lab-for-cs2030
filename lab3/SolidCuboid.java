@@ -1,0 +1,2 @@
+class SolidCuboid extends Cuboid{
+	
