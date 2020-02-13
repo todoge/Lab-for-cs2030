@@ -1,4 +1,4 @@
-class SolidShape3D { 
+class SolidShape3D implements Shape3D{ 
 	private Shape3D shape;
 	private Material material;
 
@@ -7,6 +7,16 @@ class SolidShape3D {
 		this.material = material;
 	}
 	
+	@Override
+	public double getVolume(){
+		return shape.getVolume();
+	}
+
+	@Override
+	public double getSurfaceArea(){
+		return shape.getSurfaceArea();
+	}
+
 	public double getMass(){
 		return shape.getVolume() * material.getDensity();
 	}
