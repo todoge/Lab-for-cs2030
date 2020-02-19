@@ -42,7 +42,28 @@ class Box <T> {
 			return of(item);
 		}
 	}
+
+	//filter returns empty box if item in box fail the test
+	//else filter returns the box as it is
+	public Box filter(BooleanCondition<T> tester){
+		if(tester.test(item)){
+			return this;
+		}
+		else{
+			return empty();
+		}
+	}
 	
+	// tranform current box type to another box type
+	public Box map(Transformer transformer){
+		if(this.item == null){
+			return empty();
+		}
+		else{
+			return new Box<>(transformer.transform(this.item));
+		}
+	}
+
 	@Override
 	public boolean equals(Object obj){
 		if(obj instanceof Box){
@@ -61,7 +82,12 @@ class Box <T> {
 
 	@Override
 	public String toString(){
-		return "[" + item + "]";
+		if(item == null){
+			return "[]";
+		}
+		else{
+			return "[" + item + "]";
+		}
 	}
 }
 
