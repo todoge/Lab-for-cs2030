@@ -9,9 +9,9 @@ class DivisibleBy implements BooleanCondition<Integer>{
 	public boolean test(Integer num2){
 		if(num2 == null){
 			return false;
-		}
+		}	
 		else{
-			return num2 % number == 0;
+			return (int) num2 % (int) number == 0;
 		}
 	}
 }

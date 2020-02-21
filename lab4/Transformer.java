@@ -1,3 +1,3 @@
 interface Transformer<T,U>{
-	U transform(T intial);
+	public U transform(T intial);
 }

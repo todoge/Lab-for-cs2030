@@ -1,8 +1,8 @@
-class LastDigitsOfHashCode implements Transformer<Object,Integer>{
+class LastDigitsOfHashCode implements Transformer<Object ,Integer>{
 	
 	private final Integer digits;
 
-	LastDigitsOfHashCode(int num){
+	LastDigitsOfHashCode(Integer num){
 		digits = num;
 	}
 
@@ -10,7 +10,7 @@ class LastDigitsOfHashCode implements Transformer<Object,Integer>{
 	//transform a box into an integer
 	@Override
 	public Integer transform(Object item){
-		return item.hashCode() % (int)Math.pow(10,digits);
+		return Math.abs(item.hashCode()) % (int)Math.pow(10,digits);
 	}
 
 

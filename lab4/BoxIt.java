@@ -1,7 +1,7 @@
-class BoxIt<T> implements Transformer<Object,Box>{
+class BoxIt <T> implements Transformer<T, Box<T>>{
 	
 	@Override
-	public Box transform(Object item){
-		return Box<T>.of(Box.of(item));
+	public Box<T> transform(T item){
+		return Box.of(item);
 	}
 }
