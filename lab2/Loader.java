@@ -1,9 +1,10 @@
 class Loader{
-    protected int loaderID;
-    protected Cruise serving;
+    protected final int loaderID;
+    protected final Cruise serving;
 
     Loader(int loaderID){
         this.loaderID = loaderID;
+	this.serving = null;
     }
     
     // overload constructor

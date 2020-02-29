@@ -1,6 +1,7 @@
 import java.util.Scanner;
 import java.util.PriorityQueue;
 import java.util.ArrayList;
+import java.util.Comparator;
 class Main{
 	
 	public static void main(String[] args){
@@ -11,27 +12,29 @@ class Main{
 			double arrivalTime = scanner.nextDouble();
 			arrivalTimes.add(arrivalTime);
 		}
-		PriorityQueue<Event> events = new PriorityQueue<>(arrivalTimes.size() * 3,new EventComparator());
+		PriorityQueue<Event> events = new PriorityQueue<>(new EventComparator());
 		int numOfCustomers = arrivalTimes.size();
 		for(int i = 0; i < numOfCustomers; i++){
 			Customer new_customer = new Customer(i+1,arrivalTimes.get(i));
-			events.add(states.ARRIVES,new_customer,arrivalTimes.get(i));
+			events.add(new Event(States.ARRIVES,new_customer,arrivalTimes.get(i)));
 			if(waiter.isBusy()){
-				if(waiter.servingTo() <= arrivalTimes.get(i)){
+				if(waiter.servingUntil() <= arrivalTimes.get(i)){
 					waiter.free();
 				}
-				else{
-					events.add(states.ARRIVES,new_customer,arrivalTimes.get(i));
+				else{	
+					events.add(new Event(States.LEAVES,new_customer,arrivalTimes.get(i)));
 				}
 			}
 			if(!waiter.isBusy()){
-				customers.add(new_customer);
-				waiter.serve(arrivalTimes.get(i));
-				System.out.println("Customer served; next service @ " + String.format("%.3f",waiter.servingTo()));
+				waiter.serve(new_customer,arrivalTimes.get(i));
+				events.add(new Event(States.SERVED, new_customer, arrivalTimes.get(i)));
 			}
 
 		}
-		System.out.println("Number of customers: " + numOfCustomers); 
+		 while(events.size() != 0){
+			 System.out.println(events.remove());
+		 }
+		 System.out.println("Number of customers: " + numOfCustomers);
 
 	}
 }

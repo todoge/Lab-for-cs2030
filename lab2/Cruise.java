@@ -1,8 +1,8 @@
 class Cruise{
-    protected final int arrivalTime;
-    protected final String id;
-    protected final int loaders;
-    protected final int serviceTime;
+    private final int arrivalTime;
+    private final String id;
+    private final int loaders;
+    private final int serviceTime;
 
     Cruise(String id,int arrivalTime, int loaders, int serviceTime){
         this.id = id;

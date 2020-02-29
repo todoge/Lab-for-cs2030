@@ -34,7 +34,7 @@ class RecycledLoader extends Loader{
 	@Override
     	public String toString(){
 	    if(serving == null){
-	    	return "Loader " + loaderID;
+	    	return "Loader " + this.loaderID;
 	    }
 	    else{
 		return ("Loader " + this.loaderID + " (recycled) serving " + serving);
