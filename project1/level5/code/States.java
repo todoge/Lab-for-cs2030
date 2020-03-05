@@ -3,7 +3,7 @@
  *
  * @author peh jun siang
  */
-enum States {
+public enum States {
     DONE(1), ARRIVES(2), WAITS(3), SERVED(4), LEAVES(5);
     private final int state;
 
@@ -17,7 +17,6 @@ enum States {
      * A smaller integer takes precedence over a larger integer
      * if 2 events occur simultaneously
      *
-     * @param void No params.
      * @return Integer
      * @author peh jun siang
      */

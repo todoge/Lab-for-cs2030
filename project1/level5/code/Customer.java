@@ -3,7 +3,7 @@
  *
  *  @author peh jun siang
  */
-class Customer {
+public class Customer {
     private final int id;
     private final double arrivalTime;
 
@@ -16,7 +16,8 @@ class Customer {
     /**
      * getID retrieves the ID of the Customer.
      *
-     * @author peh jun siang
+     * @return  id (int).
+     * @author peh jun siang.
      */
     // gets customer ID
     public int getId() {
@@ -26,6 +27,7 @@ class Customer {
     /**
      * getArrivalTime retrieves the arrivalTime of the customer.
      *
+     * @return arrivalTime (double).
      * @author peh jun siang
      */
     // gets arrival time of customer
@@ -33,6 +35,13 @@ class Customer {
         return this.arrivalTime;
     }
 
+    /**
+     * Overrides toString method to the stipulated format.
+     *
+     * @return String
+     * @author peh jun siang
+     * @see #toString()
+     */
     @Override
     public String toString() {
         return id + " arrives at " + String.format("%.3f",arrivalTime);

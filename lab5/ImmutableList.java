@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.function.Predicate;
 import java.util.function.Function;
 import java.lang.IllegalArgumentException;
+import java.lang.IllegalStateException;
+import java.util.Collections;
 
 class ImmutableList<T> {
 	private final List<T> lst;
@@ -100,6 +102,19 @@ class ImmutableList<T> {
             return new ImmutableList<T>(lst);
         }
     }
+
+    // sort method that takes a comparator to sort the ImmutableList
+    public ImmutableList<T> sorted() {
+        List<T> temp = new ArrayList<>(lst);
+        try {
+            Collections.sort(temp);
+            return new ImmutableList<T>(temp);
+
+        } catch (Exception e) {
+            throw new IllegalStateException("List elements do not implement Comparable");
+        }
+    }
+
 
 
 	@Override

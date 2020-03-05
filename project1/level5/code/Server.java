@@ -3,7 +3,7 @@
  *
  * @author peh jun siang.
  */
-class Server {
+public class Server {
     private boolean isBusy;
     private Double servingSince;
     private Customer serving;
@@ -12,7 +12,6 @@ class Server {
     /**
      * Server Constructor.
      *
-     * @param void No params.
      * @author peh jun siang.
      */
     //constructor
@@ -25,7 +24,7 @@ class Server {
     /**
      * isBusy method returns true if server is busy.
      *
-     * @param void No params.
+     * @return isBusy (boolean).
      * @author peh jun siang.
      */
     // returns true if server is busy
@@ -36,7 +35,7 @@ class Server {
     /**
      * servingSince returns the time the server started serving.
      *
-     * @param void No params.
+     * @return servingSince (double).
      * @author peh jun siang.
      */
     // returns the time the server begun serving
@@ -47,7 +46,7 @@ class Server {
     /**
      * servingUntil returns the time the server will be serving Until.
      *
-     * @param void No params.
+     * @return servingSince + timeNeededToServe (double).
      * @author peh jun siang.
      */
     // returns the time the server will be serving until
@@ -58,7 +57,6 @@ class Server {
     /**
      * frees the server.
      *
-     * @param void No params.
      * @author peh jun siang.
      */
     // frees the server but keeps last time server was last busy
@@ -85,7 +83,6 @@ class Server {
     /**
      * getServing returns the customer server is currently serving.
      *
-     * @param void No params.
      * @return customer
      * @author peh jun siang
      */
