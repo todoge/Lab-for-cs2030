@@ -5,48 +5,57 @@ import java.util.function.Function;
 
 class Lazy<T> { 
 
-    private final Supplier<Optional<T>> head;
-    private final Supplier<Lazy<T>> tail;
+    private final Supplier<? extends T> sup;
+    private T evaluated;
+    private boolean cached;
 
-    private Lazy(Supplier<Optional<T>> head, Supplier<Lazy<T>> tail) {
-        this.head = head;
-        this.tail = tail;
+    private Lazy(Supplier<? extends T> sup) {
+        this.sup = sup;
+        evaluated = null;
+        cached = false;
+    }
+
+    // overloaded method for cached evaluated values
+    private Lazy(T evaluated) {
+        this.evaluated = evaluated;
+        sup = () -> evaluated;
+        cached = true;
     }
 
     static <T> Lazy<T> ofNullable(T v) {
-         return new Lazy<T>(() -> Optional.ofNullable(v),null);
+         return new Lazy<T>(v);
     }
 
     static <T> Lazy<T> generate(Supplier<? extends T> supplier) {
-        return new Lazy<T>(
-            () -> Optional.ofNullable(supplier.get()),
-            () -> Lazy.generate(supplier)
-        );
+        return new Lazy<T>(supplier);
     }
 
     <R> Lazy<R> map(Function<? super T, ? extends R> mapper) {
-        return new Lazy<R>( 
-            ()-> head.get().map(mapper),
-            ()->tail.get().map(mapper)
+        return Lazy.generate( 
+            ()-> this.get().map(mapper).orElse(null)
         );
     }
 
     Lazy<T> filter(Predicate<? super T> predicate) {
-        return new Lazy<T>( 
-            ()->head.get().filter(predicate),
-            ()-> tail.get().filter(predicate)
+        return Lazy.generate( 
+            ()-> this.get().filter(predicate).orElse(null)
         );
     }
 
     Optional<T> get() {
-        return head.get();
+        if (cached) {
+            return Optional.ofNullable(evaluated);
+        } else {
+            Optional<T> result = Optional.ofNullable(sup.get());
+            this.evaluated = result.orElse(null);
+            this.cached = true;
+            return result; 
+        }
     }
 
     @Override 
     public String toString() {
-        return tail == null 
-            ? head.get().isEmpty() ? "null" : head.get() + "" 
-            : "?";
+        return cached ? evaluated + "" : "?";
     }
 
 }
