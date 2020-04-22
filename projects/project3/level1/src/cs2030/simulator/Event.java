@@ -1,3 +1,4 @@
+package cs2030.simulator;
 /**
  * This is a class to create an Event.
  *

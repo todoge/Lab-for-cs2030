@@ -1,3 +1,4 @@
+package cs2030.simulator;
 /**
  * States refers to the current State of the customer.
  *

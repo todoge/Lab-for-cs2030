@@ -1,12 +1,12 @@
-import java.util.Scanner;
+package cs2030.simulator;
 import java.util.PriorityQueue;
-import java.util.ArrayList;
-import java.util.Comparator;
 
-class Main {
+public class Engine {
+
     private static double totalWaitingTime = 0;
     private static int totalCustomersServed = 0;
     private static Server[] servers;
+    private static double Time = 0;
 
     private static boolean isAllBusy() {
         boolean result = true;
@@ -16,42 +16,66 @@ class Main {
         return result;
     }
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        ArrayList<Double> arrivalTimes = new ArrayList<>();
-        int numOfServers = scanner.nextInt();
-        servers = new Server[numOfServers];
-        // set up the servers
-        for (int i = 0; i < numOfServers; i++) {
-            servers[i] = new Server(i + 1);
+    private static boolean isAnyBusy() {
+        for (int i = 0; i < servers.length; i++) {
+            if (servers[i].isBusy()){
+                return true;
+            }
+            if (servers[i].hasQ()){
+                return true;
+            }
         }
+        return false;
+    }
 
-        while (scanner.hasNextDouble()) {
-            double arrivalTime = scanner.nextDouble();
-            arrivalTimes.add(arrivalTime);
-        }
+    public static void run(int seed, int numOfServers, int queueLength, int numOfCustomers, double arrivalRate, double serviceRate) {
 
         PriorityQueue<Event> events = new PriorityQueue<>(new EventComparator());
 
-        int numOfCustomers = arrivalTimes.size();
+        RandomGenerator rng = new RandomGenerator(seed, arrivalRate, serviceRate, 0);
+
+        double serviceTimeRequired = 0;
+
+        servers = new Server[numOfServers];
+
+        // set up the servers
+        for (int i = 0; i < numOfServers; i++) {
+            servers[i] = new Server(i + 1, queueLength);
+        }
+
 
         for (int i = 0; i < numOfCustomers; i++) {
-            Customer newCustomer = new Customer(i + 1, arrivalTimes.get(i));
-            events.add(new Event(States.ARRIVES, newCustomer, arrivalTimes.get(i)));
 
-            // check if the waiters are busy.
+            serviceTimeRequired = rng.genServiceTime();
+
+            Customer newCustomer = new Customer(i + 1, Time, serviceTimeRequired);
+            Time += rng.genInterArrivalTime();
+
+
+
+            events.add(new Event(States.ARRIVES, newCustomer, newCustomer.getArrivalTime()));
+
+            // check if the waiters are busy one by one through the servers array
             // if so see if we can free them
             for (int j = 0; j < numOfServers; j++) {
+
+                // retrieves the server
                 Server waiter = servers[j];
+                // if server is busy we check if server can be freed.
+                // Otherwise we will check if customer can queue
                 if (waiter.isBusy()) {
-                    if (waiter.servingUntil() <= arrivalTimes.get(i)) {
-                        // see if we can free the waiters
+                    // check if server can serve
+                    if (waiter.servingUntil() <= newCustomer.getArrivalTime()) {
+                        // if can serve, we free the current waiter
                         events.add(
                                 new Event(States.DONE, waiter.servingWho(),
                                         waiter.servingUntil(), waiter)
                         );
+                        // free
                         waiter.free();
-                        // after we free we check if we can serve the people waiting
+
+                        // if the server is not busy and there are people queuing after we free the waiter,
+                        // we serve the queue of the waiter.
                         while (waiter.hasQ() && !waiter.isBusy()) {
                             // we serve the queuing customer
                             Customer nextInLine = waiter.popQ();
@@ -64,7 +88,7 @@ class Main {
                             totalCustomersServed++;
                             waiter.serve(nextInLine, waiter.servingUntil());
                             // then we check if waiter can we freed again
-                            if (waiter.servingUntil() <= arrivalTimes.get(i)) {
+                            if (waiter.servingUntil() <= nextInLine.getArrivalTime()) {
                                 events.add(
                                         new Event(States.DONE, waiter.servingWho(),
                                                 waiter.servingUntil(), waiter)
@@ -75,39 +99,48 @@ class Main {
                     }
                 }
             }
+            // initialise new customer as cannot be serve first.
             boolean cannotBeServed = true;
+            // if all servers are busy
             if (isAllBusy()) {
                 for (int j = 0;  j < numOfServers; j++) {
                     Server waiter = servers[j];
-                    if (!waiter.hasQ()) {
-                        events.add(new Event(States.WAITS,newCustomer,arrivalTimes.get(i),waiter));
+                    // if customer can be queued
+                    if (waiter.canQ()) {
+                        events.add(new Event(States.WAITS,newCustomer,newCustomer.getArrivalTime(),waiter));
                         waiter.addQ(newCustomer);
+
                         cannotBeServed = false;
                         break;
                     }
                 }
+                // otherwise not all servers are busy, we serve the new customer immediately
             } else {
                 for (int j = 0; j < numOfServers; j++) {
                     Server waiter = servers[j];
                     if (!waiter.isBusy()) {
                         // if there are people queuing
-                        waiter.serve(newCustomer,arrivalTimes.get(i));
+                        waiter.serve(newCustomer,newCustomer.getArrivalTime());
                         totalCustomersServed++;
                         events.add(
-                                new Event(States.SERVED, newCustomer, arrivalTimes.get(i),waiter)
+                                new Event(States.SERVED, newCustomer, newCustomer.getArrivalTime(),waiter)
                         );
                         cannotBeServed = false;
                         break;
                     }
                 }
             }
-
+            // if cannot be served due to all serves busy and cannot queue, leave
             if (cannotBeServed) {
-                events.add(new Event(States.LEAVES,newCustomer,arrivalTimes.get(i)));
+                events.add(new Event(States.LEAVES,newCustomer,newCustomer.getArrivalTime()));
             }
         }
+
+        // while there are no new customers, there might be still customers
+        // queuing for the waiters
         for (int j = 0; j < numOfServers; j++) {
             Server waiter = servers[j];
+
             // if waiter is still busy
             while (waiter.isBusy()) {
                 events.add(
@@ -125,6 +158,8 @@ class Main {
                 }
             }
         }
+
+        // Analysis portion and printing
         while (events.size() != 0) {
             System.out.println(events.remove());
         }
@@ -136,3 +171,4 @@ class Main {
         );
     }
 }
+

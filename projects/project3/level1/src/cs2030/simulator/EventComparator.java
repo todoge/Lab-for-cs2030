@@ -1,3 +1,4 @@
+package cs2030.simulator;
 /**
  * Event comparator used to arrange sequence of events according to specification.
  *

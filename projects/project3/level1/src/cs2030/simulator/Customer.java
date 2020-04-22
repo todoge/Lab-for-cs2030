@@ -1,3 +1,4 @@
+package cs2030.simulator;
 /**
  * This is a model class to for the Customer.
  *
@@ -5,12 +6,14 @@
  */
 public class Customer {
     private final int id;
-    private final double arrivalTime;
+    private final Double arrivalTime;
+    private double serviceTimeRequired;
 
     // constructor
-    Customer(int id, double arrivalTime) {
+    Customer(int id, double arrivalTime, Double serviceTimeRequired) {
         this.id = id;
         this.arrivalTime = arrivalTime;
+        this.serviceTimeRequired = serviceTimeRequired;
     }
 
     /**
@@ -31,8 +34,19 @@ public class Customer {
      * @author peh jun siang
      */
     // gets arrival time of customer
-    public double getArrivalTime() {
+    public Double getArrivalTime() {
         return this.arrivalTime;
+    }
+
+    /**
+     * getServiceTime retrieves the service time required for the customer.
+     *
+     * @return service time (double).
+     * @author peh jun siang
+     */
+    // gets service time of customer
+    public Double getServiceTime() {
+        return this.serviceTimeRequired;
     }
 
     /**

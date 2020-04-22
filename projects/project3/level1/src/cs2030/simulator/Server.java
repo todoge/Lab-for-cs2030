@@ -1,4 +1,6 @@
+package cs2030.simulator;
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 /**
  * Server class to create a waiter.
@@ -10,9 +12,9 @@ public class Server {
     private boolean isBusy;
     private Double servingSince;
     private Customer serving;
-    private static final int timeNeededToServe = 1;
-    private ArrayList<Customer> waitingQ;
-
+    private Double timeNeededToServe;
+    public PriorityQueue<Customer> waitingQ;
+    private int maxQueueLen;
     /**
      * Server Constructor.
      *
@@ -20,12 +22,16 @@ public class Server {
      * @author peh jun siang.
      */
     //constructor
-    Server(int id) {
+    Server(int id, int maxQueueLen) {
         this.id = id;
         isBusy = false;
         servingSince = null;
         serving = null;
-        waitingQ = new ArrayList<>(1);
+        waitingQ = new PriorityQueue<>((c1,c2)->
+                c1.getArrivalTime().compareTo(c2.getArrivalTime())
+        );
+        this.maxQueueLen = maxQueueLen;
+        timeNeededToServe = null;
     }
 
     /**
@@ -46,7 +52,7 @@ public class Server {
      * @author peh jun siang.
      */
     public Customer popQ() {
-        return waitingQ.remove(0);
+        return waitingQ.poll(); 
     }
 
     /**
@@ -57,7 +63,7 @@ public class Server {
      * @author peh jun siang.
      */
     public boolean addQ(Customer customer) {
-        return this.hasQ() ? false : waitingQ.add(customer);
+        return waitingQ.add(customer);
     }
 
     /**
@@ -67,7 +73,7 @@ public class Server {
      * @author peh jun siang.
      */
     public boolean hasQ() {
-        return waitingQ.size() == 1;
+        return !waitingQ.isEmpty();
     }
 
     /**
@@ -119,14 +125,15 @@ public class Server {
      *
      * @param customer Takes in a customer.
      * @see Customer
-     * @param time (double).
+     * @param arrivalTime (double).
      * @author peh jun siang.
      */
     // make the server serve a customer from a given time
-    public void serve(Customer customer, double time) {
-        servingSince = time;
+    public void serve(Customer customer, double arrivalTime) {
+        servingSince = arrivalTime;
         isBusy = true;
         serving = customer;
+        timeNeededToServe = customer.getServiceTime();
     }
 
     /**
@@ -140,6 +147,9 @@ public class Server {
         return serving;
     }
 
+    public boolean canQ(){
+        return waitingQ.size() < maxQueueLen;
+    }
 
 }
 
