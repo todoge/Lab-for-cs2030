@@ -1,9 +1,11 @@
 package cs2030.simulator;
+
 /**
  * This is a model class to for the Customer.
  *
  *  @author peh jun siang
  */
+
 public class Customer {
     private final Integer id;
     private final Double arrivalTime;
@@ -43,14 +45,13 @@ public class Customer {
     /**
      * getServiceTime retrieves the service time required for the customer.
      *
-     * @return service time (double).
+     * @return service time (Double).
      * @author peh jun siang
      */
     // gets service time of customer
     public Double getServiceTime() {
         return this.serviceTimeRequired;
     }
-
 
     /**
      * setServiceTime set the service time.
@@ -63,11 +64,12 @@ public class Customer {
     }
 
     /**
-     * returns true if customer is greedy
+     * returns true if customer is greedy.
      *
      * @return boolean
      * @author peh jun siang
      */
+
     public boolean isGreedy() {
         return isGreedy;
     }
@@ -79,9 +81,10 @@ public class Customer {
      * @author peh jun siang
      * @see #toString()
      */
+
     @Override
-    public String toString(){
-        if (isGreedy){
+    public String toString() {
+        if (isGreedy) {
             return id + "(greedy)";
         } else {
             return id + "";

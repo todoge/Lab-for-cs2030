@@ -1,9 +1,11 @@
 package cs2030.simulator;
+
 /**
  * This is a class to create an Event.
  *
  * @author peh jun siang
  */
+
 public class Event {
     private final States state;
     private final Customer customer;
@@ -86,13 +88,13 @@ public class Event {
      */
     @Override
     public String toString() {
-        if (server instanceof SelfCheckOut){
+        if (server instanceof SelfCheckOut) {
             if (state == States.DONE) {
                 return String.format("%.3f", time) + " " + customer.toString() + " " + state
                         + " serving by " + "self-check " + server.getId();
             } else if (state == States.SERVED) {
-                return String.format("%.3f", time) + " " + customer.toString() + " " + state + " by "
-                        + "self-check " + server.getId();
+                return String.format("%.3f", time) + " " + customer.toString()
+                        + " " + state + " by " + "self-check " + server.getId();
             } else if (state == States.WAITS) {
                 return String.format("%.3f", time) + " " + customer.toString() + " " + state
                         + " to be served by " + "self-check " + server.getId();
@@ -104,8 +106,8 @@ public class Event {
                 return String.format("%.3f", time) + " " + customer.toString() + " " + state
                         + " serving by " + "server " + server.getId();
             } else if (state == States.SERVED) {
-                return String.format("%.3f", time) + " " + customer.toString()  + " " + state + " by "
-                        + "server " + server.getId();
+                return String.format("%.3f", time) + " " + customer.toString()  + " "
+                        + state + " by " + "server " + server.getId();
             } else if (state == States.WAITS) {
                 return String.format("%.3f", time) + " " + customer.toString()  + " " + state
                         + " to be served by " + "server " + server.getId();

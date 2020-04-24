@@ -1,4 +1,5 @@
 package cs2030.simulator;
+
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
@@ -21,6 +22,7 @@ public class Server {
      * Server Constructor.
      *
      * @param id (int)
+     * @param maxQueueLen (int)
      * @author peh jun siang.
      */
     //constructor
@@ -29,10 +31,10 @@ public class Server {
         isBusy = false;
         servingSince = null;
         serving = null;
-        waitingQ = new PriorityQueue<>((c1,c2)->
+        waitingQ = new PriorityQueue<>((c1,c2) ->
                 c1.getArrivalTime().compareTo(c2.getArrivalTime())
         );
-        state = ServerStates.SERVER_BACK; 
+        state = ServerStates.SERVER_BACK;
         this.maxQueueLen = maxQueueLen;
     }
 
@@ -54,7 +56,7 @@ public class Server {
      * @author peh jun siang.
      */
     public Customer popQ() {
-        return waitingQ.poll(); 
+        return waitingQ.poll();
     }
 
     /**
@@ -69,7 +71,7 @@ public class Server {
     }
 
     /**
-     * peek queue
+     * peek waitingQ.
      *
      * @return Customer (customer).
      * @author peh jun siang.
@@ -155,23 +157,23 @@ public class Server {
      * @return customer
      * @author peh jun siang
      */
-    // get the customer the server is currently serving
+    // get the customer the server is currently serving.
     public Customer servingWho() {
         return serving;
     }
 
-     /**
+    /**
      * canQ returns whether a customer can queue for the server.
      *
      * @return boolean
      * @author peh jun siang
-    */ 
-    public boolean canQ(){
+     */
+    public boolean canQ() {
         return waitingQ.size() < maxQueueLen;
     }
 
     /**
-     * returns whether a server can serve 
+     * returns whether a server can serve or otherwise.
      *
      * @return boolean
      * @author peh jun siang
@@ -179,12 +181,11 @@ public class Server {
     // returns true if server can serve
     public boolean canServe() {
         return (state == ServerStates.SERVER_BACK) && !isBusy;
-    }   
+    }
 
     /**
-     * set server as rest
+     * set server as resting.
      *
-     * @return void
      * @author peh jun siang
      */
     // returns true if server can serve
@@ -195,9 +196,8 @@ public class Server {
     }
 
     /**
-     * set server as back
+     * set server as back.
      *
-     * @return void
      * @author peh jun siang
      */
     // returns true if server can serve
@@ -206,7 +206,7 @@ public class Server {
     }
 
     /**
-     * check if server is Back
+     * check if server is back.
      *
      * @return boolean
      * @author peh jun siang
@@ -217,7 +217,7 @@ public class Server {
     }
 
     /**
-     * check if server is a self check out station
+     * check if server is a self check out station.
      *
      * @return boolean
      * @author peh jun siang
@@ -234,7 +234,7 @@ public class Server {
      * @author peh jun siang.
      */
     // returns length of queue
-    public Integer qLen() {
+    public Integer waitingQLength() {
         return waitingQ.size();
     }
 }

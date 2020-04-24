@@ -5,6 +5,7 @@ package cs2030.simulator;
  * @see java.util.Comparator
  * @author peh jun siang
  */
+
 import java.util.Comparator;
 
 public class EventComparator implements Comparator<Event> {

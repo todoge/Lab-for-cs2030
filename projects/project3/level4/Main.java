@@ -37,6 +37,6 @@ class Main {
         double probabilityOfGreedy = scanner.nextDouble();
 
         Engine.run(seed,numOfServers,numOfSelfCheckOut,queueLength,numOfCustomers,
-                arrivalRate, serviceRate, restingRate, probabilityOfResting, probabilityOfGreedy) ;
+                arrivalRate, serviceRate, restingRate, probabilityOfResting, probabilityOfGreedy);
     }
 }
