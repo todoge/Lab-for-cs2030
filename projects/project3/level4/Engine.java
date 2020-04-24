@@ -35,16 +35,6 @@ public class Engine {
         }
     }
 
-    private static boolean canCloseStore() {
-        for (int k = 0; k < servers.length; k++) {
-            Server waiter = servers[k];
-            if (waiter.isBusy() || waiter.hasQ()){
-                return false;
-            }
-        }
-        return true;
-    }
-
     private static boolean isSelfCheckOutAvaliable() {
         for (int i = numOfHumanServers; i < servers.length; i++) {
             if (!servers[i].isBusy()) {
@@ -54,8 +44,16 @@ public class Engine {
         return false;
     }
 
+    private static boolean genGreedy(double greedyProb, double randomProb){
+        if (randomProb < greedyProb) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static void run(int seed, int numOfServers, int numberOfSelfCheckOut, int queueLength, int numOfCustomers,
-                           double arrivalRate, double serviceRate, double restingRate, double restingProb) {
+                           double arrivalRate, double serviceRate, double restingRate, double restingProb, double greedyProb) {
 
         PriorityQueue<Event> events = new PriorityQueue<>(new EventComparator());
 
@@ -96,7 +94,7 @@ public class Engine {
 
         for (int i = 0; i < numOfCustomers; i++) {
 
-            Customer newCustomer = new Customer(i + 1, Time);
+            Customer newCustomer = new Customer(i + 1, Time, genGreedy(greedyProb,rng.genCustomerType()));
             events.add(new Event(States.ARRIVES, newCustomer, Time));
 
             // set up the servers
@@ -168,14 +166,31 @@ public class Engine {
             boolean cannotBeServed = true;
             // if all servers are busy
             if (isAllUnavailable()) {
-                for (int k = 0; k < numOfServers + numberOfSelfCheckOut; k++) {
-                    Server waiter = servers[k];
-                    // if customer can be queued
-                    if (waiter.canQ()) {
+                if (newCustomer.isGreedy()) {
+                    PriorityQueue<Server> greedyChronologicalQueue = new PriorityQueue<>((c1,c2) ->
+                            c1.qLen().compareTo(c2.qLen())
+                    );
+                    for (Server s : servers) {
+                        if (s.canQ()) {
+                            greedyChronologicalQueue.add(s);
+                        }
+                    }
+                    if (!greedyChronologicalQueue.isEmpty()) {
+                        Server waiter = greedyChronologicalQueue.poll();
                         events.add(new Event(States.WAITS,newCustomer,newCustomer.getArrivalTime(),waiter));
                         waiter.addQ(newCustomer);
                         cannotBeServed = false;
-                        break;
+                    }
+                } else {
+                    for (int k = 0; k < numOfServers + numberOfSelfCheckOut; k++) {
+                        Server waiter = servers[k];
+                        // if customer can be queued
+                        if (waiter.canQ()) {
+                            events.add(new Event(States.WAITS,newCustomer,newCustomer.getArrivalTime(),waiter));
+                            waiter.addQ(newCustomer);
+                            cannotBeServed = false;
+                            break;
+                        }
                     }
                 }
                 // otherwise not all servers are busy, we serve the new customer immediately

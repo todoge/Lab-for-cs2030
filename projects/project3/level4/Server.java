@@ -13,7 +13,7 @@ public class Server {
     private Double servingSince;
     private Customer serving;
     private Double servingUntil;
-    public PriorityQueue<Customer> waitingQ;
+    private PriorityQueue<Customer> waitingQ;
     private int maxQueueLen;
     private ServerStates state;
 
@@ -225,6 +225,17 @@ public class Server {
     // returns true if server is a self checkout station
     public boolean isSelfCheckOut() {
         return false;
+    }
+
+    /**
+     *  returns the length of the queue.
+     *
+     * @return length of queue (Integer).
+     * @author peh jun siang.
+     */
+    // returns length of queue
+    public Integer qLen() {
+        return waitingQ.size();
     }
 }
 

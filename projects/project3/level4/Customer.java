@@ -8,12 +8,14 @@ public class Customer {
     private final Integer id;
     private final Double arrivalTime;
     private Double serviceTimeRequired = null;
+    private boolean isGreedy = false;
 
     // constructor
-    Customer(int id, double arrivalTime) {
+    Customer(int id, double arrivalTime, boolean isGreedy) {
         this.id = id;
         this.arrivalTime = arrivalTime;
         this.serviceTimeRequired = serviceTimeRequired;
+        this.isGreedy = isGreedy;
     }
 
     /**
@@ -49,17 +51,6 @@ public class Customer {
         return this.serviceTimeRequired;
     }
 
-    /**
-     * Overrides toString method to the stipulated format.
-     *
-     * @return String
-     * @author peh jun siang
-     * @see #toString()
-     */
-    @Override
-    public String toString() {
-        return id + " arrives at " + String.format("%.3f",arrivalTime);
-    }
 
     /**
      * setServiceTime set the service time.
@@ -69,5 +60,31 @@ public class Customer {
     // sets service time of customer
     public void setServiceTime(double serviceTimeRequired) {
         this.serviceTimeRequired = serviceTimeRequired;
+    }
+
+    /**
+     * returns true if customer is greedy
+     *
+     * @return boolean
+     * @author peh jun siang
+     */
+    public boolean isGreedy() {
+        return isGreedy;
+    }
+
+    /**
+     * Overrides toString method to the stipulated format.
+     *
+     * @return String
+     * @author peh jun siang
+     * @see #toString()
+     */
+    @Override
+    public String toString(){
+        if (isGreedy){
+            return id + "(greedy)";
+        } else {
+            return id + "";
+        }
     }
 }

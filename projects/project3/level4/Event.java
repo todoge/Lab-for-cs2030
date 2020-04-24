@@ -88,29 +88,29 @@ public class Event {
     public String toString() {
         if (server instanceof SelfCheckOut){
             if (state == States.DONE) {
-                return String.format("%.3f", time) + " " + customer.getId() + " " + state
+                return String.format("%.3f", time) + " " + customer.toString() + " " + state
                         + " serving by " + "self-check " + server.getId();
             } else if (state == States.SERVED) {
-                return String.format("%.3f", time) + " " + customer.getId() + " " + state + " by "
+                return String.format("%.3f", time) + " " + customer.toString() + " " + state + " by "
                         + "self-check " + server.getId();
             } else if (state == States.WAITS) {
-                return String.format("%.3f", time) + " " + customer.getId() + " " + state
+                return String.format("%.3f", time) + " " + customer.toString() + " " + state
                         + " to be served by " + "self-check " + server.getId();
             } else {
-                return String.format("%.3f", time) + " " + customer.getId() + " " + state;
+                return String.format("%.3f", time) + " " + customer.toString() + " " + state;
             }
         } else {
             if (state == States.DONE) {
-                return String.format("%.3f", time) + " " + customer.getId() + " " + state
+                return String.format("%.3f", time) + " " + customer.toString() + " " + state
                         + " serving by " + "server " + server.getId();
             } else if (state == States.SERVED) {
-                return String.format("%.3f", time) + " " + customer.getId() + " " + state + " by "
+                return String.format("%.3f", time) + " " + customer.toString()  + " " + state + " by "
                         + "server " + server.getId();
             } else if (state == States.WAITS) {
-                return String.format("%.3f", time) + " " + customer.getId() + " " + state
+                return String.format("%.3f", time) + " " + customer.toString()  + " " + state
                         + " to be served by " + "server " + server.getId();
             } else {
-                return String.format("%.3f", time) + " " + customer.getId() + " " + state;
+                return String.format("%.3f", time) + " " + customer.toString() + " " + state;
             }
         }
     }

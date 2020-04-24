@@ -33,7 +33,10 @@ class Main {
         // (double) probability of resting
         double probabilityOfResting = scanner.nextDouble();
 
+        // (double) probability of greedy customer
+        double probabilityOfGreedy = scanner.nextDouble();
 
-        Engine.run(seed,numOfServers,numOfSelfCheckOut,queueLength,numOfCustomers,arrivalRate, serviceRate, restingRate, probabilityOfResting) ;
+        Engine.run(seed,numOfServers,numOfSelfCheckOut,queueLength,numOfCustomers,
+                arrivalRate, serviceRate, restingRate, probabilityOfResting, probabilityOfGreedy) ;
     }
 }
