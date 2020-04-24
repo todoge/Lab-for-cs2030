@@ -186,6 +186,7 @@ public class Server {
     /**
      * set server as resting.
      *
+     * @param restingTime - duration to rest for
      * @author peh jun siang
      */
     // returns true if server can serve

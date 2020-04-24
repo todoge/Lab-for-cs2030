@@ -56,6 +56,7 @@ public class Customer {
     /**
      * setServiceTime set the service time.
      *
+     * @param  serviceTimeRequired = service time needed to serve this customer
      * @author peh jun siang
      */
     // sets service time of customer

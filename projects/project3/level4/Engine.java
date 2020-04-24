@@ -1,5 +1,11 @@
 package cs2030.simulator;
 
+/**
+ * Main driver class.
+ *
+ * @author peh jun siang
+ */
+
 import java.util.PriorityQueue;
 
 public class Engine {
@@ -11,7 +17,6 @@ public class Engine {
     private static PriorityQueue<Server> chronologicalOrder;
     public static RandomGenerator rng;
     private static int numOfHumanServers;
-    private static SelfCheckOut mainSelfCheckout;
 
     private static boolean isAllUnavailable() {
         for (int i = 0; i < servers.length; i++) {
@@ -114,7 +119,7 @@ public class Engine {
             }
         }
 
-        mainSelfCheckout = (SelfCheckOut) servers[numOfHumanServers];
+
 
         // ========== Abstraction barrier (Assusme Set up is correct) ==================
         // update queue of each server
@@ -174,10 +179,10 @@ public class Engine {
                     if (waiter.servingUntil() <= newCustomer.getArrivalTime()) {
                         chronologicalOrder.add(waiter);
                     }
-                } else if ((waiter.isSelfCheckOut() && mainSelfCheckout.hasQ() &&
+                } else if ((waiter.isSelfCheckOut() && servers[numOfServers].hasQ() &&
                         waiter.canServe())) {
                     // we serve the queuing customer
-                    Customer nextInLine = mainSelfCheckout.popQ();
+                    Customer nextInLine = servers[numOfServers].popQ();
                     nextInLine.setServiceTime(rng.genServiceTime());
                     events.add(
                             new Event(States.SERVED, nextInLine,
@@ -291,9 +296,10 @@ public class Engine {
                 totalWaitingTime += (waiter.servingUntil() - nextInLine.getArrivalTime());
                 totalCustomersServed++;
                 waiter.serve(nextInLine, waiter.servingUntil());
-            } else if ((waiter.isSelfCheckOut() && mainSelfCheckout.hasQ() && waiter.canServe())) {
+            } else if ((waiter.isSelfCheckOut() && servers[numOfServers].hasQ()
+                    && waiter.canServe())) {
                 // we serve the queuing customer
-                Customer nextInLine = mainSelfCheckout.popQ();
+                Customer nextInLine = servers[numOfServers].popQ();
                 nextInLine.setServiceTime(rng.genServiceTime());
                 events.add(
                         new Event(States.SERVED, nextInLine,

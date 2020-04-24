@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"cs2030.simulator","l":"Customer"},{"p":"cs2030.simulator","l":"Engine"},{"p":"cs2030.simulator","l":"Event"},{"p":"cs2030.simulator","l":"EventComparator"},{"p":"cs2030.simulator","l":"Server"},{"p":"cs2030.simulator","l":"ServerStates"},{"p":"cs2030.simulator","l":"States"}]
