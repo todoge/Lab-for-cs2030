@@ -32,8 +32,9 @@ class Point{
     }
 
     //atan2 between 2 points (angle to point B from current point)
-    public double angleTo(Point p){
-        return Math.atan2(this.x + p.x, this.y + p.y);
+    public double angleTo(Point p)
+    {
+        return Math.atan2(p.y-this.y, p.x-this.x);
     }
 
     //returns a new point moved by a specified distance from current point
@@ -65,6 +66,6 @@ class Point{
 
     @Override
     public String toString(){
-        return String.format("point (%.3f,%.3f)",this.x,this.y);
+        return String.format("point (%.3f, %.3f)",this.x,this.y);
      }
 }

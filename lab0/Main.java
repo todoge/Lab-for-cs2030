@@ -3,14 +3,15 @@ class Main{
     public static Circle createCircle(Point p1, Point p2, double radius){
         Point mid = p1.midPoint(p2);
         double distance = Math.sqrt(Math.pow(radius,2) - Math.pow(p1.distanceTo(mid),2));
-	if(Double.isNaN(distance) || p1.equals(p2)){
-		return null;
-	}
-	else{
-        double angle = p1.angleTo(p2);
-        Point centre =  mid.moveTo(angle,distance);
-        return  Circle.getCircle(centre,radius);
-	}
+
+        if(Double.isNaN(distance) || p1.equals(p2)){
+            return null;
+        }
+            else{
+                double angle = p1.angleTo(p2) + Math.PI/2;
+                Point centre =  mid.moveTo(angle,distance);
+                return  Circle.getCircle(centre,radius);
+        }
     }
 
     public static void main(String[] args){
@@ -23,7 +24,7 @@ class Main{
 	    Point p2 = new Point(arr[2],arr[3]);
 	    Circle c = createCircle(p1,p2,arr[4]);
 	    if(c != null){
-		    System.out.println(String.format("Created: circle of radius %.3f centred at point (%.3f,%.3f)",c.getRadius(),
+		    System.out.println(String.format("Created: circle of radius %.1f centered at point (%.3f, %.3f)",c.getRadius(),
                                 c.getCentre().getX(),c.getCentre().getY()));
 	    }
 	    else{

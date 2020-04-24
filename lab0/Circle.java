@@ -14,6 +14,10 @@ class Circle{
     public Point getCentre(){
 	    return this.centre;
     }
+    // check if a point is contain within a circle
+    public boolean contains(Point p){
+	return this.centre.distanceTo(p) <= radius;
+    }
 
     //factory method
     public static Circle getCircle(Point c, double r){
@@ -27,7 +31,7 @@ class Circle{
 
     //override string method
     public String toString(){
-        return String.format("circle of radius %.3f centred at point (%.3f,%.3f)",this.radius,
+        return String.format("circle of radius %.1f centered at point (%.3f, %.3f)",this.radius,
                                 this.centre.getX(),this.centre.getY());
     }
 }    
