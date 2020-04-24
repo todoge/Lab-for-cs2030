@@ -7,13 +7,13 @@ package cs2030.simulator;
 public class Customer {
     private final int id;
     private final Double arrivalTime;
-    private double serviceTimeRequired;
+    private Double serviceTimeRequired;
 
     // constructor
-    Customer(int id, double arrivalTime, Double serviceTimeRequired) {
+    Customer(int id, double arrivalTime) {
         this.id = id;
         this.arrivalTime = arrivalTime;
-        this.serviceTimeRequired = serviceTimeRequired;
+        serviceTimeRequired = 0.0;
     }
 
     /**
@@ -59,5 +59,16 @@ public class Customer {
     @Override
     public String toString() {
         return id + " arrives at " + String.format("%.3f",arrivalTime);
+    }
+
+    /**
+     * setSeviceTime retrieves the service time required for the customer.
+     *
+     * @return service time (double).
+     * @author peh jun siang
+     */
+    // sets service time of customer
+    public void setServiceTime(Double serviceTimeRequired) {
+        this.serviceTimeRequired = serviceTimeRequired;
     }
 }

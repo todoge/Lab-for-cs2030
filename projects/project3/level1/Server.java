@@ -12,9 +12,10 @@ public class Server {
     private boolean isBusy;
     private Double servingSince;
     private Customer serving;
-    private Double timeNeededToServe;
+    private Double servingUntil;
     public PriorityQueue<Customer> waitingQ;
     private int maxQueueLen;
+
     /**
      * Server Constructor.
      *
@@ -31,7 +32,6 @@ public class Server {
                 c1.getArrivalTime().compareTo(c2.getArrivalTime())
         );
         this.maxQueueLen = maxQueueLen;
-        timeNeededToServe = null;
     }
 
     /**
@@ -41,7 +41,7 @@ public class Server {
      * @author peh jun siang.
      */
     // returns true if server is busy
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -52,7 +52,7 @@ public class Server {
      * @author peh jun siang.
      */
     public Customer popQ() {
-        return waitingQ.poll(); 
+        return waitingQ.poll();
     }
 
     /**
@@ -64,6 +64,16 @@ public class Server {
      */
     public boolean addQ(Customer customer) {
         return waitingQ.add(customer);
+    }
+
+    /**
+     * peek queue
+     *
+     * @return Customer (customer).
+     * @author peh jun siang.
+     */
+    public Customer peekQ() {
+        return waitingQ.peek();
     }
 
     /**
@@ -94,7 +104,7 @@ public class Server {
      * @author peh jun siang.
      */
     // returns the time the server begun serving
-    public double servingSince() {
+    public Double servingSince() {
         return servingSince;
     }
 
@@ -105,8 +115,8 @@ public class Server {
      * @author peh jun siang.
      */
     // returns the time the server will be serving until
-    public double servingUntil() {
-        return servingSince + timeNeededToServe;
+    public Double servingUntil() {
+        return servingUntil;
     }
 
     /**
@@ -131,9 +141,9 @@ public class Server {
     // make the server serve a customer from a given time
     public void serve(Customer customer, double arrivalTime) {
         servingSince = arrivalTime;
+        servingUntil = arrivalTime + customer.getServiceTime();
         isBusy = true;
         serving = customer;
-        timeNeededToServe = customer.getServiceTime();
     }
 
     /**
@@ -147,6 +157,12 @@ public class Server {
         return serving;
     }
 
+    /**
+     * canQ returns whether a customer can queue for the server.
+     *
+     * @return boolean
+     * @author peh jun siang
+     */
     public boolean canQ(){
         return waitingQ.size() < maxQueueLen;
     }

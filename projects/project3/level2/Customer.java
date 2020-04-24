@@ -5,7 +5,7 @@ package cs2030.simulator;
  *  @author peh jun siang
  */
 public class Customer {
-    private final int id;
+    private final Integer id;
     private final Double arrivalTime;
     private Double serviceTimeRequired = null;
 
@@ -23,7 +23,7 @@ public class Customer {
      * @author peh jun siang.
      */
     // gets customer ID
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
 

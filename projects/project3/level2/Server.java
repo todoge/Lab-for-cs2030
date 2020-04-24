@@ -43,7 +43,7 @@ public class Server {
      * @author peh jun siang.
      */
     // returns true if server is busy
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
